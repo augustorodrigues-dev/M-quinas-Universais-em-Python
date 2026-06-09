@@ -36,21 +36,16 @@ O núcleo de processamento das duas implementações foi desenvolvido utilizando
 
 Em vez de grandes estruturas condicionais (`if/else`), cada máquina consulta uma tabela de transições representada por dicionários Python, reproduzindo diretamente a função de transição formal:
 
-[
-\delta(estado, símbolo) \rightarrow próximo_estado
-]
+δ(estado, símbolo) → próximo_estado
 
 Dessa forma, o motor computacional permanece genérico e independente da linguagem reconhecida.
 
----
-└──
+
 ## 1. Máquina de Post
 
 ### Linguagem Reconhecida
 
-[
-L = {a^n b^n c^n \mid n \geq 1}
-]
+**Linguagem:** L = { aⁿ bⁿ cⁿ | n ≥ 1 }
 
 Classificação:
 
@@ -103,9 +98,7 @@ for o único símbolo remanescente na fila.
 
 ### Linguagem Reconhecida
 
-[
-L = {\text{sequências bem formadas de } (), [], {}}
-]
+**Linguagem:** L = { sequências bem formadas de (), [], {} }
 
 Classificação:
 
@@ -136,9 +129,7 @@ o símbolo é armazenado no topo da pilha.
 
 Formalmente:
 
-[
-\delta(q,a,X)\rightarrow(p,[X,a])
-]
+`δ(q, a, X) → (p, [X, a])`
 
 #### Desempilhamento (Pop)
 
@@ -309,11 +300,8 @@ Representação gráfica de:
 
 Ferramentas de IA generativa foram utilizadas exclusivamente como apoio em:
 
-* Refatoração de código;
-* Aplicação do padrão Table-Driven;
-* Geração de testes automatizados;
-* Estilização da interface HTML/CSS do notebook;
-* Revisão e formatação da documentação.
+* Auxilio no desenvolvimento dos notebook;
+* Auxilio nos testes;
 
 Toda a modelagem formal, implementação dos algoritmos, construção dos diagramas e validação teórica foram realizadas pela equipe.
 
