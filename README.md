@@ -15,8 +15,7 @@
 
 * Augusto Pereira Rodrigues
 * César Ribeiro
-* Fernando Fonseca
-* *(Nome do 4º integrante, se houver)*
+* Caue Jadão
 
 ---
 
