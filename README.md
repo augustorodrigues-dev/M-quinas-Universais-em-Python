@@ -2,213 +2,263 @@
 
 ## Informações Gerais
 
-**Instituição:** CESUPA - Centro Universitário do Estado do Pará
-**Disciplina:** Teoria da Computabilidade
-**Professor:** Daniel Leal Souza
-**Semestre:** 01/2026
-
----
+* **Instituição:** CESUPA - Centro Universitário do Estado do Pará
+* **Disciplina:** Teoria da Computabilidade
+* **Professor:** Daniel Leal Souza
+* **Semestre:** 01/2026
 
 ## Equipe
 
-**Turma:** CC5MA / CC5NA *(preencher conforme aplicável)*
-
 * Augusto Pereira Rodrigues
 * César Ribeiro
-* Caue Jadão
+* Cauê Jadão
+
+**Turma:** CC5MA
 
 ---
 
-# Objetivo do Trabalho
+# 🎯 Objetivo do Trabalho
 
-Este projeto tem como objetivo implementar e analisar dois modelos clássicos da Teoria da Computabilidade:
+Este projeto consiste no desenvolvimento, simulação e análise comparativa de dois modelos clássicos da Teoria da Computabilidade, de acordo com as diretrizes formais da avaliação AV2.
 
-1. **Máquina de Post**
-2. **Autômato de Pilha**
+Os modelos implementados foram:
 
-Além da implementação computacional, o trabalho contempla a documentação dos modelos, rastreamento das execuções e análise dos resultados obtidos.
+1. **Máquina de Post (aⁿbⁿcⁿ)** — Demonstração de computabilidade em linguagens não regulares por meio de estruturas cíclicas de armazenamento em fila (FIFO).
+2. **Autômato de Pilha (Validador Sintático)** — Reconhecimento de linguagens livres de contexto através do balanceamento e aninhamento de delimitadores utilizando pilha (LIFO).
+
+O diferencial deste projeto está na disponibilização de simuladores visuais executados em **Jupyter Notebook**, permitindo acompanhar o comportamento da memória e das transições em tempo real.
 
 ---
 
-# Modelos Implementados
+# 💻 Modelos Implementados e Fundamentação Teórica
 
+O núcleo de processamento das duas implementações foi desenvolvido utilizando o padrão **Table-Driven (Dirigido por Tabela)**.
+
+Em vez de grandes estruturas condicionais (`if/else`), cada máquina consulta uma tabela de transições representada por dicionários Python, reproduzindo diretamente a função de transição formal:
+
+[
+\delta(estado, símbolo) \rightarrow próximo_estado
+]
+
+Dessa forma, o motor computacional permanece genérico e independente da linguagem reconhecida.
+
+---
+└──
 ## 1. Máquina de Post
 
-### Problema Resolvido
-
-Reconhecimento da linguagem:
+### Linguagem Reconhecida
 
 [
 L = {a^n b^n c^n \mid n \geq 1}
 ]
 
-### Descrição
+Classificação:
 
-A implementação utiliza uma **Máquina de Post baseada em fila (FIFO – First In, First Out)**.
+* Linguagem não regular
+* Linguagem sensível ao contexto
 
-O algoritmo opera em duas etapas principais:
+### Estrutura de Armazenamento
+
+* Fila (`collections.deque`)
+* Política FIFO (*First In, First Out*)
+
+### Controle Finito
+
+* 10 estados formais
+
+### Mecânica de Resolução
 
 #### Fase 1 — Validação Estrutural
 
-Verifica se a entrada segue o padrão:
+Os estados `q_val_a`, `q_val_a2`, `q_val_b` e `q_val_c` verificam:
 
-```text
-aⁿ bⁿ cⁿ
-```
-
-Garantindo:
-
-* Pelo menos um símbolo `a`
-* Pelo menos um símbolo `b`
-* Pelo menos um símbolo `c`
+* Existência de pelo menos um `a`, um `b` e um `c`
 * Ordem correta dos símbolos
+* Rejeição imediata de cadeias inválidas
 
 #### Fase 2 — Cancelamento Cíclico
 
-Após a validação estrutural, a máquina realiza ciclos sucessivos de cancelamento:
+Após a validação estrutural:
 
-1. Remove um `a`
-2. Remove um `b`
-3. Remove um `c`
+1. Remove um símbolo `a`
+2. Remove um símbolo `b`
+3. Remove um símbolo `c`
 4. Retorna ao início da fila
 
-O processo se repete até que todos os símbolos sejam consumidos.
+O ciclo é repetido até que reste apenas o marcador final `#`.
 
-### Características
+### Critério de Aceitação
 
-* Modelo: Máquina de Post (Fila)
-* Estrutura de dados: `deque`
-* Total de estados: 10
-* Estratégia: FIFO
-* Linguagem reconhecida: não regular
-
-### Exemplos
-
-#### Cadeias Aceitas
+A máquina aceita quando:
 
 ```text
-abc
-aabbcc
-aaabbbccc
-aaaabbbbcccc
+#
 ```
 
-#### Cadeias Rejeitadas
-
-```text
-aabbc
-abca
-aabbbccc
-abbccc
-```
+for o único símbolo remanescente na fila.
 
 ---
 
-## 2. Autômato de Pilha
+## 2. Autômato de Pilha (PDA)
 
-### Problema Resolvido
-
-Validação de sequências corretamente balanceadas de delimitadores:
+### Linguagem Reconhecida
 
 [
 L = {\text{sequências bem formadas de } (), [], {}}
 ]
 
-### Descrição
+Classificação:
 
-A implementação utiliza um **Autômato de Pilha (PDA)** para verificar o balanceamento e o aninhamento correto dos símbolos:
+* Linguagem Livre de Contexto (GLC)
 
-```text
-()
-[]
-{}
-```
+### Estrutura de Armazenamento
 
-A pilha é utilizada para armazenar símbolos de abertura e garantir que cada símbolo de fechamento corresponda ao último símbolo aberto.
+* Pilha (`list`)
+* Política LIFO (*Last In, First Out*)
 
-### Exemplos
+### Controle Finito
 
-#### Cadeias Aceitas
+* 9 estados
 
-```text
-()
-([])
-{[()]}
-```
+### Mecânica de Resolução
 
-#### Cadeias Rejeitadas
+#### Empilhamento (Push)
+
+Ao ler símbolos de abertura:
 
 ```text
 (
-([)]
-{]
+[
+{
 ```
 
-### Características
+o símbolo é armazenado no topo da pilha.
 
-* Modelo: Autômato de Pilha
-* Estrutura de dados: Pilha (LIFO)
-* Estratégia: Push e Pop
-* Linguagem reconhecida: livre de contexto
+Formalmente:
+
+[
+\delta(q,a,X)\rightarrow(p,[X,a])
+]
+
+#### Desempilhamento (Pop)
+
+Ao ler símbolos de fechamento:
+
+```text
+)
+]
+}
+```
+
+a máquina compara o símbolo lido com o topo da pilha.
+
+Exemplo:
+
+```text
+[  -> ]
+{  -> }
+(  -> )
+```
+
+Se houver correspondência, o topo é removido.
+
+Caso contrário, a execução é enviada para `q_rejeita`.
+
+#### Critério de Aceitação
+
+Ao final da leitura:
+
+* A entrada deve ter sido totalmente consumida.
+* A pilha deve conter apenas o marcador de fundo `$`.
 
 ---
 
-# Estrutura do Repositório
+# 📂 Estrutura do Repositório
 
 ```text
 📦 trabalho-av2-computabilidade
 │
-├── implementacoes
+├── implementacoes/
 │   ├── maquina_post.py
-│   └── automato_pilha.py
+│   ├── maquina_post.ipynb
+│   ├── automato_pilha.py
+│   └── automato_pilha.ipynb
 │
-├── testes
-│   ├── logs_post/
-│   ├── logs_pilha/
-│   └── capturas_execucao/
 │
-├── slides
+├── testes/
+│   ├── test_maquina_post.py
+│   └── test_automato_pilha.py
+│
+├── slides/
 │   └── apresentacao.pdf
 │
+├── .gitignore
 ├── uso_ia.md
-│
 └── README.md
 ```
 
-### Descrição dos Diretórios
+---
 
-| Diretório        | Conteúdo                                     |
-| ---------------- | -------------------------------------------- |
-| `implementacoes` | Código-fonte dos modelos computacionais      |
-| `testes`         | Logs, rastreamentos e evidências de execução |
-| `slides`         | Apresentação utilizada na defesa do trabalho |
-| `uso_ia.md`      | Declaração de uso de Inteligência Artificial |
-| `README.md`      | Documentação principal do projeto            |
+# 🧪 Suíte de Testes Automatizados
+
+Para garantir a confiabilidade das implementações, foram desenvolvidos testes automatizados utilizando a biblioteca nativa `unittest`.
+
+## Executando Todos os Testes
+
+```bash
+python3 -m unittest discover -s testes
+```
+
+## Casos Cobertos
+
+### Máquina de Post
+
+Aceitação:
+
+```text
+abc
+aabbcc
+aaabbbccc
+```
+
+Rejeição:
+
+```text
+aabbc
+aabbccc
+abca
+xyz
+```
+
+### Autômato de Pilha
+
+Aceitação:
+
+```text
+{[()]}
+()[]{}
+```
+
+Rejeição:
+
+```text
+{(}))
+(([])
+```
 
 ---
 
-# Dependências
+# 🚀 Instruções de Execução
 
-O projeto foi desenvolvido utilizando apenas recursos nativos da linguagem Python.
-
-### Requisitos
+## Pré-requisitos
 
 * Python 3.10 ou superior
 
-### Bibliotecas Utilizadas
-
-```python
-collections
-time
-```
-
-Nenhuma instalação adicional é necessária.
+Nenhuma biblioteca externa é necessária.
 
 ---
 
-# Execução
-
-Abra um terminal na raiz do projeto e execute:
+## 1. Execução via Terminal
 
 ### Máquina de Post
 
@@ -224,85 +274,61 @@ python3 implementacoes/automato_pilha.py
 
 ---
 
-# Casos de Teste
+## 2. Execução via Jupyter Notebook
 
-A implementação disponibiliza exemplos prontos para validação.
-
-### Máquina de Post
-
-Entrada:
+Para a apresentação visual, execute:
 
 ```text
-aabbcc
+notebooks/simulador_visual.ipynb
 ```
 
-Resultado:
+O notebook exibe:
 
-```text
-ACEITA
-```
+### Fita de Leitura
 
-Entrada:
+Destaca visualmente o símbolo atual sob processamento.
 
-```text
-aabbc
-```
+### Painel Preditivo
 
-Resultado:
+Exibe:
 
-```text
-REJEITA
-```
+* Estado atual
+* Próximo estado
+* Símbolos válidos para transição
 
-### Autômato de Pilha
+### Memória Visual
 
-Entrada:
+Representação gráfica de:
 
-```text
-{[()]}
-```
-
-Resultado:
-
-```text
-ACEITA
-```
-
-Entrada:
-
-```text
-([)]
-```
-
-Resultado:
-
-```text
-REJEITA
-```
+* Fila (FIFO) para a Máquina de Post
+* Pilha (LIFO) para o PDA
 
 ---
 
-# Uso de Inteligência Artificial
+# 🛠️ Uso de Inteligência Artificial
 
-Ferramentas de Inteligência Artificial foram utilizadas como apoio para:
+Ferramentas de IA generativa foram utilizadas exclusivamente como apoio em:
 
-* Estudo dos modelos computacionais;
-* Revisão de código;
-* Documentação;
-* Organização da estrutura do projeto.
+* Refatoração de código;
+* Aplicação do padrão Table-Driven;
+* Geração de testes automatizados;
+* Estilização da interface HTML/CSS do notebook;
+* Revisão e formatação da documentação.
 
-Toda modelagem, implementação, testes e validação foram realizados pela equipe.
-
----
-
-# Referências
-
-* HOPCROFT, John E.; MOTWANI, Rajeev; ULLMAN, Jeffrey D. *Introduction to Automata Theory, Languages and Computation*.
-* SIPSER, Michael. *Introduction to the Theory of Computation*.
-* MENEZES, Paulo Blauth. *Linguagens Formais e Autômatos*.
+Toda a modelagem formal, implementação dos algoritmos, construção dos diagramas e validação teórica foram realizadas pela equipe.
 
 ---
 
-## Licença
+# 📚 Referências
 
-Projeto desenvolvido exclusivamente para fins acadêmicos na disciplina de **Teoria da Computabilidade – CESUPA (2026)**.
+HOPCROFT, John E.; MOTWANI, Rajeev; ULLMAN, Jeffrey D. *Introduction to Automata Theory, Languages and Computation*. 3. ed. Boston: Pearson, 2006.
+
+SIPSER, Michael. *Introduction to the Theory of Computation*. 3. ed. Boston: Cengage Learning, 2012.
+
+MENEZES, Paulo Blauth. *Linguagens Formais e Autômatos*. 6. ed. Porto Alegre: Sagra Luzzatto, 2011.
+
+---
+
+# 📄 Licença
+
+Este repositório possui finalidade exclusivamente acadêmica, desenvolvido como componente avaliativo da disciplina **Teoria da Computabilidade** do curso de Ciência da Computação do **CESUPA (2026)**.

@@ -1,0 +1,1 @@
+O presente projeto utilizou a inteligencia artificial no auxilio de desenvolvimento dos arquivos notebook para a melhor visualização ds exemplos criados.
