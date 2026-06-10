@@ -298,7 +298,7 @@ Representação gráfica de:
 
 # 🛠️ Uso de Inteligência Artificial
 
-Ferramentas de IA generativa foram utilizadas exclusivamente como apoio em:
+Ferramentas de IA generativa (Gemini) foram utilizadas exclusivamente como apoio em:
 
 * Auxilio no desenvolvimento dos notebook;
 * Auxilio nos testes;
