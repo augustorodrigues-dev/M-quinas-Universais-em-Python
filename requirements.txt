@@ -1,0 +1,9 @@
+# Dependências do projeto.
+#
+# Os simuladores em terminal (implementacoes/*.py) e os testes (testes/*.py)
+# usam APENAS a biblioteca padrão do Python (3.10+) — nada a instalar.
+#
+# As bibliotecas abaixo são necessárias somente para abrir/executar os
+# simuladores VISUAIS em Jupyter (implementacoes/*.ipynb):
+notebook>=7.0
+ipython>=8.0
